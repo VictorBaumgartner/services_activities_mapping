@@ -2,19 +2,20 @@ import json
 from collections import defaultdict
 
 # Load data from a JSON file
-input_path = r'C:\Users\victo\Desktop\activities_services_mapping_clean\mapping_dates\cap_agde_clean_sentence_case.json'
-output_path = r'C:\Users\victo\Desktop\activities_services_mapping_clean\mapping_dates\titles_with_dates.json'
+input_path = r'C:\Users\victo\Desktop\activities_services_mapping_clean\mapping_dates\herault_clean_sentence_case.json'
+output_path = r'C:\Users\victo\Desktop\activities_services_mapping_clean\mapping_dates\titles_with_end_dates.json'
 
 with open(input_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
 
-# Collect all start_dates for each title
+# Collect all end_dates for each title
 title_to_dates = defaultdict(set)
 
 for entry in data:
-    title = entry["title"]
-    start_date = entry["start_date"]
-    title_to_dates[title].add(start_date)
+    title = entry.get("title")
+    end_date = entry.get("end_date")
+    if title and end_date:
+        title_to_dates[title].add(end_date)
 
 # Convert sets to sorted lists
 title_to_dates_sorted = {title: sorted(list(dates)) for title, dates in title_to_dates.items()}
